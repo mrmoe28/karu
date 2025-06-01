@@ -7,6 +7,7 @@ let isGenerating = false;
 let researchMode = false;
 let projectToDelete = null;
 let artifactsOpen = false;
+let desktopCommanderEnabled = false;
 
 // AI Response Templates
 const codeResponses = {
@@ -205,6 +206,11 @@ function generateSmartResponse(message) {
     if (message.startsWith('[RESEARCH MODE]')) {
         const query = message.replace('[RESEARCH MODE]', '').trim();
         return generateResearchResponse(query);
+    }
+    
+    // Desktop Commander integration
+    if (desktopCommanderEnabled) {
+        return generateEnhancedResponse(message);
     }
     
     // Web development requests
@@ -1340,4 +1346,131 @@ function switchArtifactTab(tab) {
         document.getElementById('artifactsPreview').style.display = 'none';
         document.getElementById('artifactsCode').style.display = 'block';
     }
+}
+
+// Desktop Commander functionality
+function toggleDesktopCommander() {
+    desktopCommanderEnabled = !desktopCommanderEnabled;
+    
+    const indicator = document.getElementById('dcToggleIndicator');
+    const icon = document.getElementById('dcToggleIcon');
+    
+    if (desktopCommanderEnabled) {
+        indicator.textContent = 'ON';
+        indicator.classList.add('on');
+        icon.textContent = '💻';
+        
+        // Test DC connection
+        testDesktopCommander();
+    } else {
+        indicator.textContent = 'OFF';
+        indicator.classList.remove('on');
+        icon.textContent = '🖥️';
+    }
+    
+    toggleSettings(); // Close dropdown
+    
+    setTimeout(() => {
+        alert(`Desktop Commander ${desktopCommanderEnabled ? 'enabled' : 'disabled'}!`);
+    }, 100);
+}
+
+async function testDesktopCommander() {
+    try {
+        // Test basic DC functionality
+        const response = await fetch('/api/dc/test', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: 'test' })
+        });
+        
+        if (response.ok) {
+            console.log('Desktop Commander connected successfully');
+        } else {
+            console.log('Desktop Commander not available - using simulation mode');
+        }
+    } catch (error) {
+        console.log('Desktop Commander not available - using simulation mode');
+    }
+}
+
+// Enhanced response generator with DC support
+function generateEnhancedResponse(message) {
+    const lowerMsg = message.toLowerCase();
+    
+    // Desktop Commander commands
+    if (desktopCommanderEnabled && (
+        lowerMsg.includes('file') || lowerMsg.includes('folder') || 
+        lowerMsg.includes('directory') || lowerMsg.includes('create') ||
+        lowerMsg.includes('read') || lowerMsg.includes('write') ||
+        lowerMsg.includes('execute') || lowerMsg.includes('command')
+    )) {
+        return generateDCResponse(message);
+    }
+    
+    return generateSmartResponse(message);
+}
+
+function generateDCResponse(message) {
+    const dcResponses = [
+        `🖥️ **Desktop Commander Integration**
+
+I can help you with desktop operations! Here are some things I can do:
+
+**File Operations:**
+\`\`\`bash
+# Create a new file
+touch example.txt
+
+# Read file contents
+cat example.txt
+
+# Create directory
+mkdir new_project
+
+# List directory contents
+ls -la
+\`\`\`
+
+**Development Tasks:**
+- Create project structures
+- Read and modify files
+- Execute scripts and commands
+- Navigate file systems
+- Search for files and content
+
+**Example Commands:**
+- "Create a new Python project"
+- "Read the contents of config.json"
+- "List all JavaScript files in this directory"
+- "Execute the build script"
+
+What specific desktop operation would you like me to help with?`,
+
+        `💻 **Desktop Commander Active**
+
+I'm connected to your desktop and ready to help! I can:
+
+**File Management:**
+- Create, read, edit, and delete files
+- Navigate directories
+- Search file contents
+- Manage project structures
+
+**Development Operations:**
+- Run build scripts
+- Execute commands
+- Install dependencies
+- Start development servers
+
+**System Integration:**
+- Access local files and folders
+- Execute terminal commands
+- Monitor system processes
+- Automate repetitive tasks
+
+Just tell me what you'd like me to do with your files or system, and I'll handle it for you!`
+    ];
+    
+    return dcResponses[Math.floor(Math.random() * dcResponses.length)];
 }

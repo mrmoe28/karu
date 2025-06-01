@@ -49,6 +49,10 @@
                         <div class="dropdown-item" onclick="openSettings()">
                             ⚙️ Settings
                         </div>
+                        <div class="dropdown-item" onclick="toggleDesktopCommander()">
+                            <span id="dcToggleIcon">🖥️</span> Desktop Commander
+                            <span class="toggle-indicator" id="dcToggleIndicator">OFF</span>
+                        </div>
                         <div class="dropdown-item" onclick="showAbout()">
                             ❓ About Karu
                         </div>
@@ -250,7 +254,7 @@
         </div>
         <div class="artifacts-content">
             <div class="artifacts-preview" id="artifactsPreview">
-                <iframe class="artifacts-iframe" id="artifactsIframe" sandbox="allow-scripts allow-same-origin"></iframe>
+                <iframe class="artifacts-iframe" id="artifactsIframe"></iframe>
             </div>
             <div class="artifacts-code" id="artifactsCode" style="display: none;">
                 <pre><code class="language-html" id="artifactsCodeContent"></code></pre>
