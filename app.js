@@ -756,13 +756,30 @@ function showAbout() {
 }
 
 function startNewChat() {
+    // Save current chat to history if it has messages
+    if (currentChatId && chatHistory.find(c => c.id === currentChatId)?.messages?.length > 0) {
+        updateChatHistory();
+    }
+    
+    // Create new chat
     currentChatId = Date.now().toString();
+    
+    // Switch to main chat view (hide all other views)
+    document.getElementById('chatArea').style.display = 'flex';
+    document.getElementById('projectsView').style.display = 'none';
+    document.getElementById('projectWorkspace').style.display = 'none';
+    
+    // Show welcome screen, hide messages
     document.getElementById('welcomeScreen').style.display = 'block';
     document.getElementById('messages').style.display = 'none';
     document.getElementById('messages').innerHTML = '';
     document.getElementById('messageInput').value = '';
     
-    // Update chat history
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelector('.nav-item[onclick="switchToChat()"]').classList.add('active');
+    
+    // Update chat history display
     updateChatHistory();
 }
 
@@ -889,10 +906,16 @@ function saveChatMessage(userMessage, assistantMessage) {
             createdAt: new Date()
         };
         chatHistory.unshift(chat);
+        
+        // Limit chat history to 20 items
+        if (chatHistory.length > 20) {
+            chatHistory = chatHistory.slice(0, 20);
+        }
     }
     
     chat.messages.push({ role: 'user', content: userMessage });
     chat.messages.push({ role: 'assistant', content: assistantMessage });
+    chat.updatedAt = new Date();
     
     updateChatHistory();
 }
@@ -963,8 +986,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Navigation functions
 function switchToChat() {
+    // Show main chat area, hide others
     document.getElementById('chatArea').style.display = 'flex';
     document.getElementById('projectsView').style.display = 'none';
+    document.getElementById('projectWorkspace').style.display = 'none';
     
     // Update nav active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -972,8 +997,10 @@ function switchToChat() {
 }
 
 function switchToProjects() {
+    // Show projects view, hide others
     document.getElementById('chatArea').style.display = 'none';
     document.getElementById('projectsView').style.display = 'block';
+    document.getElementById('projectWorkspace').style.display = 'none';
     
     // Update nav active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -1060,6 +1087,12 @@ function confirmDelete() {
         
         setTimeout(() => {
             projectToDelete.card.remove();
+            
+            // Store deleted project names to prevent re-adding
+            if (!window.deletedProjects) {
+                window.deletedProjects = new Set();
+            }
+            window.deletedProjects.add(projectToDelete.name);
         }, 200);
         
         // Close modal
@@ -1082,6 +1115,19 @@ function openProject(projectName) {
     document.getElementById('workspaceTitle').textContent = projectName;
     // Update modal project name
     document.getElementById('modalProjectName').textContent = projectName;
+    
+    // Reset workspace state
+    document.getElementById('workspaceWelcome').style.display = 'flex';
+    document.getElementById('workspaceMessages').style.display = 'none';
+    document.getElementById('workspaceMessages').innerHTML = '';
+    document.getElementById('workspaceMessageInput').value = '';
+    
+    // Ensure knowledge panel is visible (not collapsed)
+    const sidebar = document.getElementById('workspaceSidebar');
+    const toggleBtn = document.getElementById('knowledgeToggle');
+    sidebar.classList.remove('collapsed');
+    toggleBtn.textContent = '📁 Project knowledge';
+    knowledgePanelCollapsed = false;
 }
 
 function openInstructionsModal() {
