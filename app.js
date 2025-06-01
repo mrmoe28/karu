@@ -668,6 +668,295 @@ You can save this as an HTML file and open it in your browser. Need any modifica
     return webPageTemplate;
 }
 
+// Enhanced web page code generator with explanations
+function generateWebPageCode(message) {
+    const webPageTemplate = `I'll create a complete web page with navigation for you:
+
+<div class="explanation-text">
+I'm building a modern, responsive website with a navigation bar at the top and interactive elements. This will include glassmorphism effects and a professional design.
+</div>
+
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyWebsite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-dropdown {
+            position: relative;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            min-width: 200px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            color: #333;
+            transition: background 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">MyWebsite</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="settings-dropdown">
+                <button class="settings-btn" onclick="toggleSettings()">Settings ⚙️</button>
+                <div class="dropdown-content" id="settingsDropdown">
+                    <div class="dropdown-item" onclick="changeTheme()">🎨 Change Theme</div>
+                    <div class="dropdown-item" onclick="changeLanguage()">🌐 Language</div>
+                    <div class="dropdown-item" onclick="showProfile()">👤 Profile</div>
+                    <div class="dropdown-item" onclick="showHelp()">❓ Help</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        <section class="hero">
+            <h1>Welcome to Our Website</h1>
+            <p>Build amazing experiences with modern web technologies</p>
+            <button class="cta-button" onclick="getStarted()">Get Started</button>
+        </section>
+    </main>
+    
+    <script>
+        function toggleSettings() {
+            const dropdown = document.getElementById('settingsDropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        function changeTheme() {
+            alert('🎨 Theme changed to Dark Mode!');
+            toggleSettings();
+        }
+        
+        function changeLanguage() {
+            alert('🌐 Language set to English!');
+            toggleSettings();
+        }
+        
+        function showProfile() {
+            alert('👤 Profile page opened!');
+            toggleSettings();
+        }
+        
+        function showHelp() {
+            alert('❓ Help documentation opened!');
+            toggleSettings();
+        }
+        
+        function getStarted() {
+            alert('🚀 Welcome! Let\\'s get started with your project.');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('settingsDropdown');
+            const settingsBtn = document.querySelector('.settings-btn');
+            
+            if (!settingsBtn.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
+\`\`\`
+
+🎨 **Modern Design Features:**
+- Gradient background with glassmorphism navigation
+- Responsive layout that works on all devices
+- Smooth animations and hover effects
+- Professional typography and spacing
+
+⚙️ **Interactive Settings Dropdown:**
+- Theme switching capability
+- Language preferences
+- Profile management
+- Help documentation
+
+📱 **Responsive Design:**
+- Mobile-friendly navigation
+- Adaptive layout for all screen sizes
+- Touch-friendly interactive elements
+
+🚀 **Interactive Elements:**
+- Functional dropdown menu with animations
+- Hover effects and transitions
+- Click handlers for all buttons
+- Professional button styling with shadows
+
+> The website is now ready to use! You can click the Settings button to see the dropdown menu in action, and all navigation links are functional. The design uses modern CSS features like backdrop-filter for the glassmorphism effect.
+
+You can save this as an HTML file and open it in your browser. Would you like me to modify any specific aspects of the design or functionality?`;
+
+    return webPageTemplate;
+}
+
 // Workspace message sending
 function sendWorkspaceMessage() {
     const messageInput = document.getElementById('workspaceMessageInput');
@@ -855,6 +1144,12 @@ function addMessage(sender, content) {
     messageEl.className = `message ${sender}`;
     messageEl.id = `message-${messageId}`;
     
+    // Create avatar
+    const avatarEl = document.createElement('div');
+    avatarEl.className = 'message-avatar';
+    avatarEl.textContent = sender === 'user' ? 'U' : 'K';
+    
+    // Create content
     const contentEl = document.createElement('div');
     contentEl.className = 'message-content';
     
@@ -864,6 +1159,18 @@ function addMessage(sender, content) {
         contentEl.innerHTML = formatMessage(content);
     }
     
+    // Add message actions for assistant messages
+    if (sender === 'assistant' && content !== 'Thinking...') {
+        const actionsEl = document.createElement('div');
+        actionsEl.className = 'message-actions';
+        actionsEl.innerHTML = `
+            <button class="message-action-btn" onclick="copyMessage('${messageId}')">Copy</button>
+            <button class="message-action-btn" onclick="regenerateMessage('${messageId}')">Regenerate</button>
+        `;
+        contentEl.appendChild(actionsEl);
+    }
+    
+    messageEl.appendChild(avatarEl);
     messageEl.appendChild(contentEl);
     messagesEl.appendChild(messageEl);
     
@@ -892,18 +1199,38 @@ function updateMessage(messageId, content) {
 }
 
 function formatMessage(content) {
-    // Simple markdown-like formatting
+    // Enhanced markdown-like formatting
     let formatted = content
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        .replace(/\n/g, '<br>');
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
     
-    // Handle code blocks
+    // Handle code blocks with language detection
     formatted = formatted.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-        const language = lang || 'javascript';
-        return `<pre><code class="language-${language}">${code.trim()}</code></pre>`;
+        const language = lang || 'text';
+        return `<pre data-language="${language}"><code class="language-${language}">${code.trim()}</code></pre>`;
     });
+    
+    // Handle feature lists (🎨 **Feature:** description)
+    formatted = formatted.replace(/^(🎨|⚙️|📱|🚀|💻|🔧|✨|🌟|📊|🎯)\s\*\*(.*?):\*\*(.*?)$/gm, 
+        '<div class="feature-item"><span class="feature-icon">$1</span><div><strong>$2:</strong>$3</div></div>'
+    );
+    
+    // Wrap consecutive feature items in a feature list
+    formatted = formatted.replace(/((?:<div class="feature-item">.*?<\/div>\s*)+)/g, 
+        '<div class="feature-list">$1</div>'
+    );
+    
+    // Handle explanation blocks
+    formatted = formatted.replace(/^>\s(.*?)$/gm, '<div class="explanation-text">$1</div>');
+    
+    // Convert line breaks
+    formatted = formatted.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+    
+    // Wrap in paragraphs if not already wrapped
+    if (!formatted.includes('<p>') && !formatted.includes('<div') && !formatted.includes('<pre>')) {
+        formatted = '<p>' + formatted + '</p>';
+    }
     
     return formatted;
 }
@@ -1305,7 +1632,12 @@ function openArtifactsWithCode(content) {
         
         // Open artifacts panel
         const artifactsPanel = document.getElementById('artifactsPanel');
+        const mainContent = document.querySelector('.main-content');
+        const chatArea = document.getElementById('chatArea');
+        
         artifactsPanel.classList.add('open');
+        mainContent.classList.add('has-artifacts');
+        chatArea.classList.add('with-artifacts');
         document.body.classList.add('artifacts-open');
         artifactsOpen = true;
         
@@ -1323,14 +1655,77 @@ function openArtifactsWithCode(content) {
         
         // Switch to preview tab by default
         switchArtifactTab('preview');
+        
+        // Initialize resizing
+        initializeResize();
     }
 }
 
 function closeArtifacts() {
     const artifactsPanel = document.getElementById('artifactsPanel');
+    const mainContent = document.querySelector('.main-content');
+    const chatArea = document.getElementById('chatArea');
+    
     artifactsPanel.classList.remove('open');
+    mainContent.classList.remove('has-artifacts');
+    chatArea.classList.remove('with-artifacts');
     document.body.classList.remove('artifacts-open');
     artifactsOpen = false;
+}
+
+function initializeResize() {
+    const resizeHandle = document.getElementById('resizeHandle');
+    const artifactsPanel = document.getElementById('artifactsPanel');
+    let isResizing = false;
+    
+    resizeHandle.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        resizeHandle.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        
+        const containerWidth = window.innerWidth;
+        const newWidth = containerWidth - e.clientX;
+        const minWidth = 300;
+        const maxWidth = containerWidth * 0.8;
+        
+        if (newWidth >= minWidth && newWidth <= maxWidth) {
+            artifactsPanel.style.width = newWidth + 'px';
+        }
+    });
+    
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            resizeHandle.classList.remove('dragging');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+}
+
+// Message actions
+function copyMessage(messageId) {
+    const messageEl = document.getElementById(`message-${messageId}`);
+    const content = messageEl.querySelector('.message-content').innerText;
+    navigator.clipboard.writeText(content).then(() => {
+        // Show brief feedback
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 1000);
+    });
+}
+
+function regenerateMessage(messageId) {
+    // Find the message and regenerate response
+    alert('Regenerate functionality - would re-run the AI response');
 }
 
 function switchArtifactTab(tab) {
