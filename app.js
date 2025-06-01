@@ -612,6 +612,60 @@ function openProject(projectName) {
     
     // Update workspace title
     document.getElementById('workspaceTitle').textContent = projectName;
+    // Update modal project name
+    document.getElementById('modalProjectName').textContent = projectName;
+}
+
+function openInstructionsModal() {
+    document.getElementById('instructionsModal').style.display = 'flex';
+}
+
+function closeInstructionsModal() {
+    document.getElementById('instructionsModal').style.display = 'none';
+}
+
+function saveProjectInstructions() {
+    const instructions = document.getElementById('instructionsModalTextarea').value.trim();
+    const projectName = document.getElementById('workspaceTitle').textContent;
+    
+    if (instructions) {
+        // Update the knowledge panel to show saved state
+        const emptyKnowledge = document.getElementById('emptyKnowledge');
+        const knowledgeContent = emptyKnowledge.parentElement;
+        
+        // Replace empty state with saved instructions preview
+        knowledgeContent.innerHTML = `
+            <div class="saved-instructions">
+                <div class="saved-instructions-header">
+                    <h4>Project Instructions</h4>
+                    <button class="edit-instructions-btn" onclick="editInstructions()">Edit</button>
+                </div>
+                <div class="saved-instructions-preview">
+                    ${instructions.substring(0, 100)}${instructions.length > 100 ? '...' : ''}
+                </div>
+            </div>
+        `;
+        
+        // Store instructions (in real app, save to backend)
+        window.currentProjectInstructions = instructions;
+        
+        closeInstructionsModal();
+        
+        // Show success message
+        setTimeout(() => {
+            alert(`Instructions saved for "${projectName}"!`);
+        }, 100);
+    } else {
+        alert('Please enter some instructions before saving.');
+    }
+}
+
+function editInstructions() {
+    // Restore the saved instructions to the modal
+    if (window.currentProjectInstructions) {
+        document.getElementById('instructionsModalTextarea').value = window.currentProjectInstructions;
+    }
+    openInstructionsModal();
 }
 
 function backToProjects() {
