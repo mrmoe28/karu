@@ -8,6 +8,10 @@ let researchMode = false;
 let projectToDelete = null;
 let artifactsOpen = false;
 let desktopCommanderEnabled = false;
+let chatDatabase = {
+    chats: {},
+    currentContext: []
+};
 
 // AI Response Templates
 const codeResponses = {
@@ -1058,43 +1062,42 @@ function showAbout() {
 
 function startNewChat() {
     // Save current chat to history if it has messages
-    if (currentChatId && chatHistory.find(c => c.id === currentChatId)?.messages?.length > 0) {
-        updateChatHistory();
+    if (currentChatId && chatDatabase.chats[currentChatId]?.messages?.length > 0) {
+        // Chat is already saved in database
     }
     
     // Create new chat
     currentChatId = Date.now().toString();
+    chatDatabase.currentContext = []; // Reset context for new chat
     
-    // Switch to main chat view (hide all other views)
+    // Switch to main chat view
     document.getElementById('chatArea').style.display = 'flex';
     document.getElementById('projectsView').style.display = 'none';
     document.getElementById('projectWorkspace').style.display = 'none';
     
     // Show welcome screen, hide messages
     document.getElementById('welcomeScreen').style.display = 'block';
-    document.getElementById('messages').style.display = 'none';
-    document.getElementById('messages').innerHTML = '';
-    document.getElementById('messageInput').value = '';
+    const messagesEl = document.getElementById('messages');
+    messagesEl.style.display = 'none';
+    messagesEl.classList.remove('active');
+    messagesEl.innerHTML = '';
+    
+    // Clear and enable input
+    const messageInput = document.getElementById('messageInput');
+    messageInput.value = '';
+    messageInput.disabled = false;
     
     // Update nav active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelector('.nav-item[onclick="switchToChat()"]').classList.add('active');
     
     // Update chat history display
-    updateChatHistory();
+    loadChatHistory();
 }
 
 function updateChatHistory() {
-    const historyEl = document.getElementById('chatHistory');
-    historyEl.innerHTML = '';
-    
-    chatHistory.forEach(chat => {
-        const chatEl = document.createElement('div');
-        chatEl.className = 'chat-item';
-        chatEl.textContent = chat.title;
-        chatEl.onclick = () => loadChat(chat.id);
-        historyEl.appendChild(chatEl);
-    });
+    // This function is now handled by loadChatHistory()
+    loadChatHistory();
 }
 
 function sendSuggestion(text) {
@@ -1109,12 +1112,18 @@ async function sendMessage() {
     if (!message || isGenerating) return;
     
     isGenerating = true;
-    messageInput.value = '';
-    messageInput.disabled = false; // Ensure input stays enabled
+    messageInput.value = ''; // Clear input immediately
+    messageInput.disabled = false;
     
-    // Hide welcome screen, show messages
-    document.getElementById('welcomeScreen').style.display = 'none';
-    document.getElementById('messages').style.display = 'block';
+    // Show messages container and hide welcome if needed
+    const messagesEl = document.getElementById('messages');
+    const welcomeEl = document.getElementById('welcomeScreen');
+    
+    if (welcomeEl.style.display !== 'none') {
+        welcomeEl.style.display = 'none';
+        messagesEl.style.display = 'block';
+        messagesEl.classList.add('active');
+    }
     
     // Add user message
     addMessage('user', message);
@@ -1125,14 +1134,14 @@ async function sendMessage() {
     // Simulate AI processing time
     await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
     
-    // Generate response
-    const response = generateSmartResponse(message);
+    // Generate response with context
+    const response = generateSmartResponseWithMemory(message);
     
     // Replace typing indicator with actual response
     updateMessage(typingId, response);
     
-    // Save to chat history
-    saveChatMessage(message, response);
+    // Save to chat database
+    saveChatToDatabase(message, response);
     
     isGenerating = false;
     
@@ -1240,33 +1249,150 @@ function formatMessage(content) {
     return formatted;
 }
 
-function saveChatMessage(userMessage, assistantMessage) {
+// Chat Database Management
+function initializeChatDatabase() {
+    const saved = localStorage.getItem('karuChatDatabase');
+    if (saved) {
+        chatDatabase = JSON.parse(saved);
+    }
+    loadChatHistory();
+}
+
+function saveChatToDatabase(userMessage, assistantMessage) {
     if (!currentChatId) {
         currentChatId = Date.now().toString();
     }
     
-    // Create or update chat in history
-    let chat = chatHistory.find(c => c.id === currentChatId);
-    if (!chat) {
-        chat = {
+    // Initialize chat if it doesn't exist
+    if (!chatDatabase.chats[currentChatId]) {
+        chatDatabase.chats[currentChatId] = {
             id: currentChatId,
             title: userMessage.substring(0, 50) + (userMessage.length > 50 ? '...' : ''),
             messages: [],
-            createdAt: new Date()
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
-        chatHistory.unshift(chat);
-        
-        // Limit chat history to 20 items
-        if (chatHistory.length > 20) {
-            chatHistory = chatHistory.slice(0, 20);
+    }
+    
+    // Add messages
+    const chat = chatDatabase.chats[currentChatId];
+    chat.messages.push({ 
+        role: 'user', 
+        content: userMessage, 
+        timestamp: new Date().toISOString() 
+    });
+    chat.messages.push({ 
+        role: 'assistant', 
+        content: assistantMessage, 
+        timestamp: new Date().toISOString() 
+    });
+    chat.updatedAt = new Date().toISOString();
+    
+    // Update current context for memory
+    chatDatabase.currentContext.push({ role: 'user', content: userMessage });
+    chatDatabase.currentContext.push({ role: 'assistant', content: assistantMessage });
+    
+    // Keep context to last 10 exchanges (20 messages)
+    if (chatDatabase.currentContext.length > 20) {
+        chatDatabase.currentContext = chatDatabase.currentContext.slice(-20);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('karuChatDatabase', JSON.stringify(chatDatabase));
+    
+    // Update UI
+    loadChatHistory();
+}
+
+function loadChatHistory() {
+    const historyEl = document.getElementById('chatHistory');
+    if (!historyEl) return;
+    
+    historyEl.innerHTML = '';
+    
+    // Convert chats object to array and sort by updatedAt
+    const chatsArray = Object.values(chatDatabase.chats)
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        .slice(0, 20); // Show only latest 20 chats
+    
+    chatsArray.forEach(chat => {
+        const chatEl = document.createElement('div');
+        chatEl.className = 'chat-item';
+        if (chat.id === currentChatId) {
+            chatEl.classList.add('active');
+        }
+        chatEl.textContent = chat.title;
+        chatEl.onclick = () => loadChat(chat.id);
+        historyEl.appendChild(chatEl);
+    });
+}
+
+function loadChat(chatId) {
+    const chat = chatDatabase.chats[chatId];
+    if (!chat) return;
+    
+    currentChatId = chatId;
+    
+    // Clear current messages
+    const messagesEl = document.getElementById('messages');
+    messagesEl.innerHTML = '';
+    
+    // Load chat messages
+    chat.messages.forEach(msg => {
+        addMessage(msg.role, msg.content);
+    });
+    
+    // Show messages area
+    document.getElementById('welcomeScreen').style.display = 'none';
+    messagesEl.style.display = 'block';
+    messagesEl.classList.add('active');
+    
+    // Update context
+    chatDatabase.currentContext = [...chat.messages];
+    
+    // Update UI
+    loadChatHistory();
+}
+
+function generateSmartResponseWithMemory(message) {
+    // Add context to response generation
+    const context = chatDatabase.currentContext.slice(-6); // Last 3 exchanges
+    const hasContext = context.length > 0;
+    
+    if (hasContext) {
+        // Check if user is referring to previous conversation
+        const lowerMsg = message.toLowerCase();
+        if (lowerMsg.includes('remember') || lowerMsg.includes('earlier') || lowerMsg.includes('before') || 
+            lowerMsg.includes('previous') || lowerMsg.includes('that') || lowerMsg.includes('it')) {
+            return generateContextualResponse(message, context);
         }
     }
     
-    chat.messages.push({ role: 'user', content: userMessage });
-    chat.messages.push({ role: 'assistant', content: assistantMessage });
-    chat.updatedAt = new Date();
+    // Generate normal response with enhanced context awareness
+    return generateSmartResponse(message);
+}
+
+function generateContextualResponse(message, context) {
+    const previousTopics = context
+        .filter(msg => msg.role === 'user')
+        .map(msg => msg.content)
+        .join(' ');
     
-    updateChatHistory();
+    const responses = [
+        `I remember our previous conversation about ${extractMainTopic(previousTopics)}. ${generateSmartResponse(message)}`,
+        
+        `Based on what we discussed earlier regarding ${extractMainTopic(previousTopics)}, ${generateSmartResponse(message)}`,
+        
+        `Continuing from our previous discussion about ${extractMainTopic(previousTopics)}: ${generateSmartResponse(message)}`
+    ];
+    
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function extractMainTopic(text) {
+    const topics = ['web development', 'Python coding', 'JavaScript', 'React', 'HTML', 'CSS', 'APIs', 'databases', 'debugging'];
+    const found = topics.find(topic => text.toLowerCase().includes(topic.toLowerCase()));
+    return found || 'programming';
 }
 
 // Settings functions
@@ -1329,7 +1455,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Project form submission
     document.getElementById('projectForm').addEventListener('submit', handleProjectCreation);
     
-    // Start with a new chat
+    // Start with a new chat and initialize database
+    initializeChatDatabase();
     startNewChat();
     
     // Ensure input is enabled
