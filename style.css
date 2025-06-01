@@ -379,25 +379,97 @@ body {
     background: #e55a2b;
 }
 
+/* Remove model selector styles that might cause conflicts */
 .model-selector {
-    position: absolute;
-    top: -60px;
-    right: 0;
-    background: #2d2d30;
+    display: none !important;
+}
+
+/* Fix input section layout without model selector */
+.input-section {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #1a1a1a;
+    border-top: 1px solid #3e3e42;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+.chat-area .input-section {
+    position: relative;
+    bottom: auto;
+    border-top: 1px solid #3e3e42;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+/* Ensure all interactive elements are clickable */
+button,
+.nav-item,
+.chat-item,
+.project-card,
+.dropdown-item,
+.suggestion-btn,
+.action-btn,
+.send-btn {
+    pointer-events: auto !important;
+    z-index: 20 !important;
+    position: relative !important;
+    cursor: pointer !important;
+}
+
+/* Remove any blocking pseudo-elements */
+*::before,
+*::after {
+    pointer-events: none !important;
+}
+
+/* Ensure input container doesn't block interactions */
+.input-container * {
+    pointer-events: auto !important;
+    z-index: 25 !important;
+}
+
+/* Fix suggestion buttons specifically */
+.suggestions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    pointer-events: auto !important;
+}
+
+.suggestion-btn {
+    background: none;
     border: 1px solid #3e3e42;
     border-radius: 12px;
-    padding: 8px 16px;
+    padding: 12px 20px;
     color: #cccccc;
     font-size: 14px;
+    cursor: pointer !important;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
+    pointer-events: auto !important;
+    z-index: 30 !important;
+    position: relative !important;
 }
 
-.model-selector:hover {
-    background: #3e3e42;
+.suggestion-btn:hover {
+    background: #2d2d30;
+    border-color: #5a5a5e;
+}
+
+/* Remove any invisible overlays */
+.welcome-screen::before,
+.welcome-screen::after,
+.input-section::before,
+.input-section::after {
+    display: none !important;
 }
 
 .suggestions {

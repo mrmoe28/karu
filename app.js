@@ -1458,29 +1458,83 @@ document.addEventListener('DOMContentLoaded', function() {
         projectForm.addEventListener('submit', handleProjectCreation);
     }
     
-    // Debug: Add click listeners to all buttons
+    // Debug: Add click listeners to all buttons with more comprehensive coverage
     console.log('Attaching click listeners...');
     
     // New chat button
     const newChatBtn = document.querySelector('.new-chat-btn');
     if (newChatBtn) {
-        newChatBtn.addEventListener('click', startNewChat);
+        newChatBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('New chat button clicked');
+            startNewChat();
+        });
         console.log('New chat button listener attached');
     }
     
     // Send button
     const sendBtn = document.querySelector('.send-btn');
     if (sendBtn) {
-        sendBtn.addEventListener('click', sendMessage);
+        sendBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Send button clicked');
+            sendMessage();
+        });
         console.log('Send button listener attached');
     }
     
     // Settings dropdown
     const userProfile = document.querySelector('.user-profile');
     if (userProfile) {
-        userProfile.addEventListener('click', toggleSettings);
+        userProfile.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Settings dropdown clicked');
+            toggleSettings();
+        });
         console.log('Settings dropdown listener attached');
     }
+    
+    // Navigation items
+    const chatNavItem = document.querySelector('.nav-item[onclick="switchToChat()"]');
+    if (chatNavItem) {
+        chatNavItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Chat nav clicked');
+            switchToChat();
+        });
+        console.log('Chat nav listener attached');
+    }
+    
+    const projectsNavItem = document.querySelector('.nav-item[onclick="switchToProjects()"]');
+    if (projectsNavItem) {
+        projectsNavItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Projects nav clicked');
+            switchToProjects();
+        });
+        console.log('Projects nav listener attached');
+    }
+    
+    // Suggestion buttons
+    document.querySelectorAll('.suggestion-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const text = btn.textContent.replace(/[^\w\s]/gi, '').trim();
+            console.log('Suggestion clicked:', text);
+            sendSuggestion(text);
+        });
+    });
+    console.log('Suggestion buttons listeners attached');
+    
+    // Remove any potential click blockers
+    document.body.style.pointerEvents = 'auto';
+    document.documentElement.style.pointerEvents = 'auto';
     
     // Start with a new chat and initialize database
     initializeChatDatabase();
