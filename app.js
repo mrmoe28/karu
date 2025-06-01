@@ -583,6 +583,7 @@ function handleProjectCreation(event) {
     const projectsGrid = document.getElementById('projectsGrid');
     const newCard = document.createElement('div');
     newCard.className = 'project-card';
+    newCard.onclick = () => openProject(name);
     newCard.innerHTML = `
         <div class="project-content">
             <h3 class="project-name">${name}</h3>
@@ -597,8 +598,46 @@ function handleProjectCreation(event) {
     // Close modal and reset form
     cancelCreateProject();
     
-    // Show success message
+    // Open the new project workspace
     setTimeout(() => {
-        alert(`Project "${name}" created successfully!`);
+        openProject(name);
     }, 100);
+}
+
+function openProject(projectName) {
+    // Hide other views
+    document.getElementById('chatArea').style.display = 'none';
+    document.getElementById('projectsView').style.display = 'none';
+    document.getElementById('projectWorkspace').style.display = 'flex';
+    
+    // Update workspace title
+    document.getElementById('workspaceTitle').textContent = projectName;
+}
+
+function backToProjects() {
+    document.getElementById('projectWorkspace').style.display = 'none';
+    document.getElementById('projectsView').style.display = 'block';
+    
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelector('.nav-item[onclick="switchToProjects()"]').classList.add('active');
+}
+
+function addProjectKnowledge() {
+    document.getElementById('emptyKnowledge').style.display = 'none';
+    document.getElementById('projectInstructions').style.display = 'block';
+}
+
+function cancelInstructions() {
+    document.getElementById('projectInstructions').style.display = 'none';
+    document.getElementById('emptyKnowledge').style.display = 'block';
+}
+
+function saveInstructions() {
+    const instructions = document.querySelector('.instructions-textarea').value.trim();
+    if (instructions) {
+        alert('Project instructions saved successfully!');
+        // In a real app, save to backend here
+    }
+    cancelInstructions();
 }

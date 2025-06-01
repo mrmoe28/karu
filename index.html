@@ -91,6 +91,79 @@
                 </div>
             </div>
             
+            <!-- Project Workspace View -->
+            <div class="project-workspace" id="projectWorkspace" style="display: none;">
+                <div class="workspace-header">
+                    <button class="back-button" onclick="backToProjects()">
+                        ← All projects
+                    </button>
+                    <div class="workspace-title-section">
+                        <h1 class="workspace-title" id="workspaceTitle">test</h1>
+                        <span class="privacy-badge">🔒 Private</span>
+                        <button class="star-button">☆</button>
+                        <button class="menu-button">⋯</button>
+                    </div>
+                </div>
+                
+                <div class="workspace-content">
+                    <div class="workspace-main">
+                        <div class="workspace-input-section">
+                            <div class="workspace-input-container">
+                                <button class="workspace-action-btn">➕</button>
+                                <button class="workspace-action-btn">📎</button>
+                                <textarea id="workspaceMessageInput" placeholder="How can I help you today?" rows="1"></textarea>
+                                <button class="workspace-action-btn">🔍 Research <span class="beta-label">BETA</span></button>
+                                <div class="model-indicator">
+                                    Claude Sonnet 4 ↗
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workspace-welcome" id="workspaceWelcome">
+                            <p class="workspace-welcome-text">Start a chat to keep conversations organized and re-use project knowledge.</p>
+                        </div>
+                        
+                        <div class="workspace-messages" id="workspaceMessages" style="display: none;">
+                            <!-- Project workspace messages will appear here -->
+                        </div>
+                    </div>
+                    
+                    <div class="workspace-sidebar">
+                        <div class="knowledge-panel">
+                            <div class="knowledge-header">
+                                <h3 class="knowledge-title">Project knowledge</h3>
+                                <button class="knowledge-add-btn">➕</button>
+                            </div>
+                            
+                            <div class="knowledge-tab">
+                                <button class="knowledge-tab-btn active">
+                                    Set project instructions
+                                    <span class="optional-badge">Optional</span>
+                                </button>
+                            </div>
+                            
+                            <div class="knowledge-content">
+                                <div class="empty-knowledge" id="emptyKnowledge">
+                                    <div class="empty-knowledge-icon">📁</div>
+                                    <p class="empty-knowledge-text">No knowledge added yet. Add PDFs, documents, or other text to the project knowledge base that Claude will reference in every project conversation.</p>
+                                    <button class="add-knowledge-btn" onclick="addProjectKnowledge()">
+                                        ➕ Add knowledge
+                                    </button>
+                                </div>
+                                
+                                <div class="project-instructions" id="projectInstructions" style="display: none;">
+                                    <textarea class="instructions-textarea" placeholder="Add instructions for this project..." rows="4"></textarea>
+                                    <div class="instructions-actions">
+                                        <button class="btn-secondary" onclick="cancelInstructions()">Cancel</button>
+                                        <button class="btn-primary" onclick="saveInstructions()">Save instructions</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Projects View -->
             <div class="projects-view" id="projectsView" style="display: none;">
                 <div class="projects-header">
