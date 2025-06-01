@@ -5,6 +5,7 @@ let chatHistory = [];
 let currentChatId = null;
 let isGenerating = false;
 let researchMode = false;
+let projectToDelete = null;
 
 // AI Response Templates
 const codeResponses = {
@@ -596,6 +597,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close modals when clicking overlay
         if (e.target.classList.contains('modal-overlay')) {
             e.target.style.display = 'none';
+            
+            // Reset delete project state if closing delete modal
+            if (e.target.id === 'deleteConfirmModal') {
+                projectToDelete = null;
+            }
         }
     });
     
@@ -649,8 +655,14 @@ function handleProjectCreation(event) {
     const projectsGrid = document.getElementById('projectsGrid');
     const newCard = document.createElement('div');
     newCard.className = 'project-card';
-    newCard.onclick = () => openProject(name);
+    newCard.onclick = (e) => {
+        // Don't open project if clicking delete button
+        if (!e.target.classList.contains('delete-project-btn')) {
+            openProject(name);
+        }
+    };
     newCard.innerHTML = `
+        <button class="delete-project-btn" onclick="deleteProject(this, '${name}')">×</button>
         <div class="project-content">
             <h3 class="project-name">${name}</h3>
             <p class="project-description">${description || 'No description provided'}</p>
@@ -668,6 +680,47 @@ function handleProjectCreation(event) {
     setTimeout(() => {
         openProject(name);
     }, 100);
+}
+
+// Delete project functionality
+function deleteProject(deleteBtn, projectName) {
+    // Prevent event bubbling to project card click
+    event.stopPropagation();
+    
+    // Store reference to project card and name
+    projectToDelete = {
+        card: deleteBtn.closest('.project-card'),
+        name: projectName
+    };
+    
+    // Show confirmation modal
+    document.getElementById('deleteProjectName').textContent = projectName;
+    document.getElementById('deleteConfirmModal').style.display = 'flex';
+}
+
+function cancelDelete() {
+    document.getElementById('deleteConfirmModal').style.display = 'none';
+    projectToDelete = null;
+}
+
+function confirmDelete() {
+    if (projectToDelete) {
+        // Remove the project card with animation
+        projectToDelete.card.style.transform = 'scale(0.8)';
+        projectToDelete.card.style.opacity = '0';
+        
+        setTimeout(() => {
+            projectToDelete.card.remove();
+        }, 200);
+        
+        // Close modal
+        cancelDelete();
+        
+        // Show success message
+        setTimeout(() => {
+            alert(`Project "${projectToDelete.name}" deleted successfully!`);
+        }, 300);
+    }
 }
 
 function openProject(projectName) {

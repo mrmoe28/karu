@@ -195,6 +195,7 @@
                 
                 <div class="projects-grid" id="projectsGrid">
                     <div class="project-card">
+                        <button class="delete-project-btn" onclick="deleteProject(this, 'Claude Clone')">×</button>
                         <div class="project-content">
                             <h3 class="project-name">Claude Clone</h3>
                             <p class="project-description">AI assistant clone with training pipeline and web interface</p>
@@ -203,6 +204,7 @@
                     </div>
                     
                     <div class="project-card">
+                        <button class="delete-project-btn" onclick="deleteProject(this, 'Desktop Assistant')">×</button>
                         <div class="project-content">
                             <h3 class="project-name">Desktop Assistant</h3>
                             <p class="project-description">Local AI assistant with file management capabilities</p>
@@ -211,6 +213,7 @@
                     </div>
                     
                     <div class="project-card">
+                        <button class="delete-project-btn" onclick="deleteProject(this, 'Contractor Master')">×</button>
                         <div class="project-content">
                             <h3 class="project-name">Contractor Master</h3>
                             <p class="project-description">Project management system for contractors</p>
@@ -219,6 +222,7 @@
                     </div>
                     
                     <div class="project-card">
+                        <button class="delete-project-btn" onclick="deleteProject(this, 'How to use Claude')">×</button>
                         <div class="project-content">
                             <h3 class="project-name">How to use Claude</h3>
                             <p class="project-description">An example project that also doubles as a how-to guide for using Claude. Chat with it to learn more about how to get the most out of chatting with Claude!</p>
@@ -226,6 +230,20 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteConfirmModal" style="display: none;">
+        <div class="delete-confirm-modal">
+            <h3 class="delete-confirm-title">Delete Project</h3>
+            <p class="delete-confirm-message">
+                Are you sure you want to delete "<span id="deleteProjectName"></span>"? This action cannot be undone.
+            </p>
+            <div class="delete-confirm-actions">
+                <button class="btn-secondary" onclick="cancelDelete()">Cancel</button>
+                <button class="btn-danger" onclick="confirmDelete()">Delete Project</button>
             </div>
         </div>
     </div>
