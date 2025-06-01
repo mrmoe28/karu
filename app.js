@@ -390,6 +390,73 @@ The research indicates this is an optimal time for strategic positioning, with m
     return researchResponses[Math.floor(Math.random() * researchResponses.length)];
 }
 
+// Workspace message sending
+function sendWorkspaceMessage() {
+    const messageInput = document.getElementById('workspaceMessageInput');
+    const message = messageInput.value.trim();
+    
+    if (!message || isGenerating) return;
+    
+    isGenerating = true;
+    messageInput.value = '';
+    
+    // Hide welcome screen, show messages
+    document.getElementById('workspaceWelcome').style.display = 'none';
+    document.getElementById('workspaceMessages').style.display = 'block';
+    
+    // Add user message to workspace
+    addWorkspaceMessage('user', message);
+    
+    // Add typing indicator
+    const typingId = addWorkspaceMessage('assistant', 'Thinking...');
+    
+    // Simulate AI processing time
+    setTimeout(async () => {
+        const response = generateSmartResponse(message);
+        updateWorkspaceMessage(typingId, response);
+        isGenerating = false;
+    }, 1000 + Math.random() * 2000);
+}
+
+function addWorkspaceMessage(sender, content) {
+    const messagesEl = document.getElementById('workspaceMessages');
+    const messageId = Date.now() + Math.random();
+    
+    const messageEl = document.createElement('div');
+    messageEl.className = `message ${sender}`;
+    messageEl.id = `workspace-message-${messageId}`;
+    
+    const contentEl = document.createElement('div');
+    contentEl.className = 'message-content';
+    
+    if (sender === 'assistant' && content === 'Thinking...') {
+        contentEl.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    } else {
+        contentEl.innerHTML = formatMessage(content);
+    }
+    
+    messageEl.appendChild(contentEl);
+    messagesEl.appendChild(messageEl);
+    
+    // Auto-scroll
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    
+    return messageId;
+}
+
+function updateWorkspaceMessage(messageId, content) {
+    const messageEl = document.getElementById(`workspace-message-${messageId}`);
+    if (messageEl) {
+        const contentEl = messageEl.querySelector('.message-content');
+        contentEl.innerHTML = formatMessage(content);
+        
+        // Highlight code if present
+        messageEl.querySelectorAll('pre code').forEach(block => {
+            hljs.highlightElement(block);
+        });
+    }
+}
+
 // UI Functions
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
@@ -586,6 +653,17 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
+    
+    // Enter to send workspace message
+    const workspaceInput = document.getElementById('workspaceMessageInput');
+    if (workspaceInput) {
+        workspaceInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendWorkspaceMessage();
+            }
+        });
+    }
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {

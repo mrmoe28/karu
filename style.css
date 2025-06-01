@@ -342,6 +342,10 @@ body {
     height: 32px !important;
     padding: 0 !important;
     margin: 8px !important;
+    z-index: 100 !important;
+    position: relative !important;
+    pointer-events: all !important;
+    cursor: pointer !important;
 }
 
 .action-btn.send-btn:hover {
@@ -362,6 +366,9 @@ body {
     cursor: pointer !important;
     transition: background 0.2s !important;
     font-size: 16px !important;
+    z-index: 100 !important;
+    position: relative !important;
+    pointer-events: all !important;
 }
 
 .send-btn:hover {
@@ -1590,4 +1597,29 @@ body {
 
 .btn-danger:hover {
     background: #c82333;
+}
+
+/* Workspace Send Button */
+.workspace-send-btn {
+    background: #ff6b35 !important;
+    color: white !important;
+    border-radius: 50% !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 8px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+    font-size: 16px !important;
+    z-index: 100 !important;
+    position: relative !important;
+    pointer-events: all !important;
+    flex-shrink: 0 !important;
+}
+
+.workspace-send-btn:hover {
+    background: #e55a2b !important;
 }
