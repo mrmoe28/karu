@@ -74,6 +74,9 @@
                         <div class="input-container">
                             <button class="action-btn">📎</button>
                             <textarea id="messageInput" placeholder="How can I help you code today?" rows="1"></textarea>
+                            <button class="action-btn research-btn" onclick="toggleResearch()" id="researchBtn">
+                                🔍 Research <span class="beta-badge">BETA</span>
+                            </button>
                             <button class="send-btn action-btn" onclick="sendMessage()">↗</button>
                         </div>
                         
@@ -112,7 +115,9 @@
                                 <button class="workspace-action-btn">➕</button>
                                 <button class="workspace-action-btn">📎</button>
                                 <textarea id="workspaceMessageInput" placeholder="How can I help you today?" rows="1"></textarea>
-                                <button class="workspace-action-btn">🔍 Research <span class="beta-label">BETA</span></button>
+                                <button class="workspace-action-btn research-btn" onclick="toggleResearch()">
+                                    🔍 Research <span class="beta-badge">BETA</span>
+                                </button>
                                 <div class="model-indicator">
                                     Claude Sonnet 4 ↗
                                 </div>
@@ -219,6 +224,45 @@
                             <p class="project-description">An example project that also doubles as a how-to guide for using Claude. Chat with it to learn more about how to get the most out of chatting with Claude!</p>
                             <div class="project-updated">Updated 4 days ago</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Modal -->
+    <div class="modal-overlay" id="researchModal" style="display: none;">
+        <div class="research-modal">
+            <div class="research-header">
+                <h3 class="research-title">🔍 Research Mode</h3>
+                <button class="modal-close-btn" onclick="closeResearch()">×</button>
+            </div>
+            
+            <div class="research-content">
+                <p class="research-description">
+                    Research mode will search the web for current information and provide comprehensive, well-sourced answers to your questions.
+                </p>
+                
+                <div class="research-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">🌐</span>
+                        <span class="feature-text">Live web search</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <span class="feature-text">Multiple sources</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎯</span>
+                        <span class="feature-text">Current data</span>
+                    </div>
+                </div>
+                
+                <div class="research-input-section">
+                    <textarea class="research-textarea" id="researchInput" placeholder="What would you like me to research?"></textarea>
+                    <div class="research-actions">
+                        <button class="btn-secondary" onclick="closeResearch()">Cancel</button>
+                        <button class="btn-primary" onclick="startResearch()">Start Research</button>
                     </div>
                 </div>
             </div>

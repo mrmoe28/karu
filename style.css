@@ -1334,3 +1334,150 @@ body {
     border-radius: 6px;
     border: 1px solid #3e3e42;
 }
+
+/* Research Button Styles */
+.research-btn {
+    background: #2d2d30 !important;
+    border: 1px solid #3e3e42 !important;
+    color: #cccccc !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+}
+
+.research-btn:hover {
+    background: #3e3e42 !important;
+    border-color: #5a5a5e !important;
+}
+
+.research-btn.active {
+    background: #ff6b35 !important;
+    color: white !important;
+    border-color: #ff6b35 !important;
+}
+
+.beta-badge {
+    background: #ff6b35;
+    color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Research Modal Styles */
+.research-modal {
+    background: #2d2d30;
+    border-radius: 16px;
+    padding: 0;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    border: 1px solid #3e3e42;
+    overflow: hidden;
+}
+
+.research-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.research-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: #888888;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+    background: #3e3e42;
+    color: #ffffff;
+}
+
+.research-content {
+    padding: 32px;
+}
+
+.research-description {
+    color: #cccccc;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+}
+
+.research-features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.feature-icon {
+    font-size: 16px;
+    width: 20px;
+}
+
+.research-input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.research-textarea {
+    background: #1a1a1a;
+    border: 1px solid #3e3e42;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.research-textarea:focus {
+    border-color: #ff6b35;
+}
+
+.research-textarea::placeholder {
+    color: #888888;
+}
+
+.research-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}

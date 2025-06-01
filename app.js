@@ -4,6 +4,7 @@ let settingsOpen = false;
 let chatHistory = [];
 let currentChatId = null;
 let isGenerating = false;
+let researchMode = false;
 
 // AI Response Templates
 const codeResponses = {
@@ -198,6 +199,12 @@ This API includes proper error handling, CORS support, and RESTful endpoints. Ne
 function generateSmartResponse(message) {
     const lowerMsg = message.toLowerCase();
     
+    // Check for research mode
+    if (message.startsWith('[RESEARCH MODE]')) {
+        const query = message.replace('[RESEARCH MODE]', '').trim();
+        return generateResearchResponse(query);
+    }
+    
     // Code-related keywords
     if (lowerMsg.includes('python') || lowerMsg.includes('function') || lowerMsg.includes('algorithm')) {
         return codeResponses.python;
@@ -321,6 +328,65 @@ Tell me about what you're building!`
     ];
     
     return responses[Math.floor(Math.random() * responses.length)];
+}
+
+// Research response generator
+function generateResearchResponse(query) {
+    const researchResponses = [
+        `🔍 **Research Results for: "${query}"**
+
+**Key Findings:**
+- Latest industry trends show significant growth in this area
+- Multiple authoritative sources confirm current best practices
+- Recent developments indicate emerging opportunities
+
+**Sources Analyzed:**
+- Academic research papers (2024)
+- Industry reports and whitepapers
+- Expert opinions and case studies
+- Government and regulatory data
+
+**Detailed Analysis:**
+Based on comprehensive web research, the current landscape shows promising developments. Key stakeholders are investing heavily in innovation, with market projections indicating sustained growth through 2025.
+
+**Recommendations:**
+1. Consider current market conditions
+2. Evaluate emerging technologies
+3. Monitor regulatory changes
+4. Assess competitive landscape
+
+*Research completed using live web data and multiple verified sources.*`,
+
+        `🔍 **Comprehensive Research: "${query}"**
+
+**Executive Summary:**
+Current data reveals significant insights across multiple dimensions of this topic, with emerging patterns that suggest strategic opportunities.
+
+**Market Intelligence:**
+- **Trend Analysis:** Growing adoption rates across key demographics
+- **Competitive Landscape:** Major players consolidating market share
+- **Technology Adoption:** Accelerating innovation cycles
+- **Regulatory Environment:** Evolving compliance requirements
+
+**Data Points:**
+- 📊 Market size projections through 2025
+- 📈 Growth rate comparisons year-over-year
+- 🎯 Target audience segmentation analysis
+- 💡 Innovation pipeline assessment
+
+**Strategic Implications:**
+The research indicates this is an optimal time for strategic positioning, with multiple convergence factors creating favorable conditions for growth and expansion.
+
+**Next Steps:**
+1. Deep-dive analysis of specific use cases
+2. Stakeholder impact assessment
+3. Risk mitigation planning
+4. Implementation roadmap development
+
+*This analysis synthesizes data from 15+ authoritative sources updated within the last 30 days.*`
+    ];
+    
+    return researchResponses[Math.floor(Math.random() * researchResponses.length)];
 }
 
 // UI Functions
@@ -666,6 +732,47 @@ function editInstructions() {
         document.getElementById('instructionsModalTextarea').value = window.currentProjectInstructions;
     }
     openInstructionsModal();
+}
+
+// Research functionality
+function toggleResearch() {
+    researchMode = !researchMode;
+    const researchBtn = document.getElementById('researchBtn');
+    
+    if (researchMode) {
+        researchBtn.classList.add('active');
+        document.getElementById('researchModal').style.display = 'flex';
+    } else {
+        researchBtn.classList.remove('active');
+        closeResearch();
+    }
+}
+
+function closeResearch() {
+    document.getElementById('researchModal').style.display = 'none';
+    researchMode = false;
+    const researchBtn = document.getElementById('researchBtn');
+    if (researchBtn) {
+        researchBtn.classList.remove('active');
+    }
+}
+
+function startResearch() {
+    const researchQuery = document.getElementById('researchInput').value.trim();
+    
+    if (!researchQuery) {
+        alert('Please enter a research question');
+        return;
+    }
+    
+    // Close research modal
+    closeResearch();
+    
+    // Set the main input with research query
+    document.getElementById('messageInput').value = `[RESEARCH MODE] ${researchQuery}`;
+    
+    // Send the research message
+    sendMessage();
 }
 
 function backToProjects() {
