@@ -1453,7 +1453,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Project form submission
-    document.getElementById('projectForm').addEventListener('submit', handleProjectCreation);
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', handleProjectCreation);
+    }
+    
+    // Debug: Add click listeners to all buttons
+    console.log('Attaching click listeners...');
+    
+    // New chat button
+    const newChatBtn = document.querySelector('.new-chat-btn');
+    if (newChatBtn) {
+        newChatBtn.addEventListener('click', startNewChat);
+        console.log('New chat button listener attached');
+    }
+    
+    // Send button
+    const sendBtn = document.querySelector('.send-btn');
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendMessage);
+        console.log('Send button listener attached');
+    }
+    
+    // Settings dropdown
+    const userProfile = document.querySelector('.user-profile');
+    if (userProfile) {
+        userProfile.addEventListener('click', toggleSettings);
+        console.log('Settings dropdown listener attached');
+    }
     
     // Start with a new chat and initialize database
     initializeChatDatabase();
@@ -1464,6 +1491,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (messageInput) {
         messageInput.disabled = false;
     }
+    
+    console.log('App initialized successfully');
 });
 
 // Navigation functions
