@@ -532,13 +532,29 @@ document.addEventListener('DOMContentLoaded', function() {
     startNewChat();
 });
 
-// Navigation functions (stubs for future implementation)
+// Navigation functions
 function switchToChat() {
-    // Switch to chat view
-    console.log('Switching to chat view');
+    document.getElementById('chatArea').style.display = 'flex';
+    document.getElementById('projectsView').style.display = 'none';
+    
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelector('.nav-item[onclick="switchToChat()"]').classList.add('active');
 }
 
 function switchToProjects() {
-    // Switch to projects view  
-    console.log('Switching to projects view');
+    document.getElementById('chatArea').style.display = 'none';
+    document.getElementById('projectsView').style.display = 'block';
+    
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelector('.nav-item[onclick="switchToProjects()"]').classList.add('active');
+}
+
+function createProject() {
+    const projectName = prompt('Project name:');
+    if (projectName) {
+        alert(`Creating project: ${projectName}`);
+        // Add project creation logic here
+    }
 }

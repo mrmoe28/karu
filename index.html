@@ -90,6 +90,65 @@
                     <!-- Chat messages will appear here -->
                 </div>
             </div>
+            
+            <!-- Projects View -->
+            <div class="projects-view" id="projectsView" style="display: none;">
+                <div class="projects-header">
+                    <h1 class="projects-title">Projects</h1>
+                    <button class="new-project-btn" onclick="createProject()">
+                        ➕ New project
+                    </button>
+                </div>
+                
+                <div class="projects-controls">
+                    <div class="search-container">
+                        <input type="text" class="projects-search" placeholder="🔍 Search projects..." id="projectsSearch">
+                    </div>
+                    <div class="sort-container">
+                        <span class="sort-label">Sort by</span>
+                        <select class="sort-select" id="projectsSort">
+                            <option value="activity">Activity</option>
+                            <option value="name">Name</option>
+                            <option value="created">Created</option>
+                            <option value="updated">Updated</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-name">Claude Clone</h3>
+                            <p class="project-description">AI assistant clone with training pipeline and web interface</p>
+                            <div class="project-updated">Updated 17 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-name">Desktop Assistant</h3>
+                            <p class="project-description">Local AI assistant with file management capabilities</p>
+                            <div class="project-updated">Updated 2 days ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-name">Contractor Master</h3>
+                            <p class="project-description">Project management system for contractors</p>
+                            <div class="project-updated">Updated 2 days ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-name">How to use Claude</h3>
+                            <p class="project-description">An example project that also doubles as a how-to guide for using Claude. Chat with it to learn more about how to get the most out of chatting with Claude!</p>
+                            <div class="project-updated">Updated 4 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
