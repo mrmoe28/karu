@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karu AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="karu-icon">⬜</div>
+                <h1>Karu</h1>
+            </div>
+            
+            <button class="new-chat-btn" onclick="startNewChat()">
+                ➕ New chat
+            </button>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item active" onclick="switchToChat()">
+                    💬 Chats
+                </div>
+                <div class="nav-item" onclick="switchToProjects()">
+                    📁 Projects
+                </div>
+            </div>
+            
+            <div class="section-header">Recents</div>
+            <div class="chat-history" id="chatHistory">
+                <!-- Chat history populated by JS -->
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile" onclick="toggleSettings()">
+                    <div class="user-avatar">K</div>
+                    <div class="user-info">
+                        <div class="user-name">User</div>
+                        <div class="user-plan">Karu AI</div>
+                    </div>
+                    <div class="dropdown-arrow">⌄</div>
+                    
+                    <div class="settings-dropdown" id="settingsDropdown">
+                        <div class="dropdown-item" onclick="openSettings()">
+                            ⚙️ Settings
+                        </div>
+                        <div class="dropdown-item" onclick="showAbout()">
+                            ❓ About Karu
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+            
+            <div class="chat-area" id="chatArea">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">✨</div>
+                    <h2 class="welcome-title">Ready to code with Karu?</h2>
+                    
+                    <div class="input-section">
+                        <div class="model-selector">
+                            Karu Sonnet 4 ⌄
+                        </div>
+                        
+                        <div class="input-container">
+                            <button class="action-btn">📎</button>
+                            <textarea id="messageInput" placeholder="How can I help you code today?" rows="1"></textarea>
+                            <button class="send-btn action-btn" onclick="sendMessage()">↗</button>
+                        </div>
+                        
+                        <div class="suggestions">
+                            <button class="suggestion-btn" onclick="sendSuggestion('Write a Python function')">✏️ Write Python</button>
+                            <button class="suggestion-btn" onclick="sendSuggestion('Debug this JavaScript code')">🐛 Debug JS</button>
+                            <button class="suggestion-btn" onclick="sendSuggestion('Create a React component')">⚛️ React</button>
+                            <button class="suggestion-btn" onclick="sendSuggestion('Design a REST API')">🌐 API Design</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="messages" id="messages">
+                    <!-- Chat messages will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-panel">
+            <div class="settings-header">
+                <h3 class="settings-title">Settings</h3>
+                <button class="settings-close" onclick="closeSettings()">×</button>
+            </div>
+            <div class="settings-content">
+                <div class="settings-section">
+                    <div class="section-title">AI Model</div>
+                    <div class="setting-item">
+                        <label class="setting-label">Response Style</label>
+                        <div class="setting-control">
+                            <select class="setting-select" id="responseStyle">
+                                <option value="balanced">Balanced</option>
+                                <option value="creative">Creative</option>
+                                <option value="precise">Precise</option>
+                                <option value="helpful">Helpful</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="section-title">Interface</div>
+                    <div class="setting-item">
+                        <label class="setting-label">Dark Mode</label>
+                        <div class="setting-control">
+                            <div class="setting-toggle active" id="darkModeToggle" onclick="toggleDarkMode()"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label class="setting-label">Code Highlighting</label>
+                        <div class="setting-control">
+                            <div class="setting-toggle active" id="codeHighlightToggle" onclick="toggleCodeHighlight()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
