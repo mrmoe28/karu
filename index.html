@@ -134,8 +134,11 @@
                         </div>
                     </div>
                     
-                    <div class="workspace-sidebar">
-                        <div class="knowledge-panel">
+                    <div class="workspace-sidebar" id="workspaceSidebar">
+                        <button class="knowledge-toggle-btn" onclick="toggleKnowledgePanel()" id="knowledgeToggle">
+                            📁 Project knowledge
+                        </button>
+                        <div class="knowledge-panel" id="knowledgePanel">
                             <div class="knowledge-header">
                                 <h3 class="knowledge-title">Project knowledge</h3>
                                 <button class="knowledge-add-btn">➕</button>

@@ -206,6 +206,12 @@ function generateSmartResponse(message) {
         return generateResearchResponse(query);
     }
     
+    // Web development requests
+    if (lowerMsg.includes('web page') || lowerMsg.includes('website') || lowerMsg.includes('html') || 
+        (lowerMsg.includes('create') && (lowerMsg.includes('page') || lowerMsg.includes('site')))) {
+        return generateWebPageCode(message);
+    }
+    
     // Code-related keywords
     if (lowerMsg.includes('python') || lowerMsg.includes('function') || lowerMsg.includes('algorithm')) {
         return codeResponses.python;
@@ -388,6 +394,271 @@ The research indicates this is an optimal time for strategic positioning, with m
     ];
     
     return researchResponses[Math.floor(Math.random() * researchResponses.length)];
+}
+
+// Web page code generator
+function generateWebPageCode(message) {
+    const webPageTemplate = `I'll create a complete web page with navigation and settings for you:
+
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Web Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+        
+        .settings-dropdown {
+            position: relative;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 200px;
+            margin-top: 0.5rem;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #e55a2b;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">MyWebsite</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="settings-dropdown">
+                <button class="settings-btn" onclick="toggleSettings()">Settings ⚙️</button>
+                <div class="dropdown-content" id="settingsDropdown">
+                    <div class="dropdown-item" onclick="changeTheme()">Change Theme</div>
+                    <div class="dropdown-item" onclick="changeLanguage()">Language</div>
+                    <div class="dropdown-item" onclick="showProfile()">Profile</div>
+                    <div class="dropdown-item" onclick="showHelp()">Help</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        <section class="hero">
+            <h1>Welcome to Our Website</h1>
+            <p>Build amazing experiences with modern web technologies</p>
+            <button class="cta-button" onclick="getStarted()">Get Started</button>
+        </section>
+    </main>
+    
+    <script>
+        function toggleSettings() {
+            const dropdown = document.getElementById('settingsDropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        function changeTheme() {
+            alert('Theme changed!');
+            toggleSettings();
+        }
+        
+        function changeLanguage() {
+            alert('Language settings opened!');
+            toggleSettings();
+        }
+        
+        function showProfile() {
+            alert('Profile page opened!');
+            toggleSettings();
+        }
+        
+        function showHelp() {
+            alert('Help documentation opened!');
+            toggleSettings();
+        }
+        
+        function getStarted() {
+            alert('Welcome! Let\\'s get started with your project.');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('settingsDropdown');
+            const settingsBtn = document.querySelector('.settings-btn');
+            
+            if (!settingsBtn.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
+\`\`\`
+
+This web page includes:
+
+🎨 **Modern Design:**
+- Gradient background with glassmorphism effects
+- Responsive navigation bar with backdrop blur
+- Professional typography and spacing
+
+⚙️ **Settings Dropdown:**
+- Theme switching capability
+- Language preferences
+- Profile management
+- Help documentation
+
+📱 **Responsive Features:**
+- Mobile-friendly navigation
+- Adaptive layout for all screen sizes
+- Touch-friendly interactive elements
+
+🚀 **Interactive Elements:**
+- Functional dropdown menu
+- Hover effects and transitions
+- Click handlers for all buttons
+
+You can save this as an HTML file and open it in your browser. Need any modifications to the design or functionality?`;
+
+    return webPageTemplate;
 }
 
 // Workspace message sending
@@ -932,4 +1203,22 @@ function saveInstructions() {
         // In a real app, save to backend here
     }
     cancelInstructions();
+}
+
+// Knowledge panel toggle
+let knowledgePanelCollapsed = false;
+
+function toggleKnowledgePanel() {
+    const sidebar = document.getElementById('workspaceSidebar');
+    const toggleBtn = document.getElementById('knowledgeToggle');
+    
+    knowledgePanelCollapsed = !knowledgePanelCollapsed;
+    
+    if (knowledgePanelCollapsed) {
+        sidebar.classList.add('collapsed');
+        toggleBtn.textContent = '📁';
+    } else {
+        sidebar.classList.remove('collapsed');
+        toggleBtn.textContent = '📁 Project knowledge';
+    }
 }
