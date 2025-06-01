@@ -526,7 +526,15 @@ document.addEventListener('DOMContentLoaded', function() {
             settingsOpen = false;
             document.getElementById('settingsDropdown').classList.remove('show');
         }
+        
+        // Close modals when clicking overlay
+        if (e.target.classList.contains('modal-overlay')) {
+            e.target.style.display = 'none';
+        }
     });
+    
+    // Project form submission
+    document.getElementById('projectForm').addEventListener('submit', handleProjectCreation);
     
     // Start with a new chat
     startNewChat();
@@ -552,9 +560,45 @@ function switchToProjects() {
 }
 
 function createProject() {
-    const projectName = prompt('Project name:');
-    if (projectName) {
-        alert(`Creating project: ${projectName}`);
-        // Add project creation logic here
+    document.getElementById('createProjectModal').style.display = 'flex';
+}
+
+function cancelCreateProject() {
+    document.getElementById('createProjectModal').style.display = 'none';
+    document.getElementById('projectForm').reset();
+}
+
+function handleProjectCreation(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('projectNameInput').value.trim();
+    const description = document.getElementById('projectDescriptionInput').value.trim();
+    
+    if (!name) {
+        alert('Please enter a project name');
+        return;
     }
+    
+    // Create new project card
+    const projectsGrid = document.getElementById('projectsGrid');
+    const newCard = document.createElement('div');
+    newCard.className = 'project-card';
+    newCard.innerHTML = `
+        <div class="project-content">
+            <h3 class="project-name">${name}</h3>
+            <p class="project-description">${description || 'No description provided'}</p>
+            <div class="project-updated">Updated just now</div>
+        </div>
+    `;
+    
+    // Add to top of grid
+    projectsGrid.insertBefore(newCard, projectsGrid.firstChild);
+    
+    // Close modal and reset form
+    cancelCreateProject();
+    
+    // Show success message
+    setTimeout(() => {
+        alert(`Project "${name}" created successfully!`);
+    }, 100);
 }

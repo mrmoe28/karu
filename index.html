@@ -152,6 +152,30 @@
         </div>
     </div>
 
+    <!-- Create Project Modal -->
+    <div class="modal-overlay" id="createProjectModal" style="display: none;">
+        <div class="create-project-modal">
+            <h2 class="modal-title">Create a personal project</h2>
+            
+            <form class="project-form" id="projectForm">
+                <div class="form-group">
+                    <label class="form-label">What are you working on?</label>
+                    <input type="text" class="form-input" id="projectNameInput" placeholder="Name your project" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">What are you trying to achieve?</label>
+                    <textarea class="form-textarea" id="projectDescriptionInput" placeholder="Describe your project, goals, subject, etc..." rows="4"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cancelCreateProject()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-panel">
