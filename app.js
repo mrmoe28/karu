@@ -6,6 +6,7 @@ let currentChatId = null;
 let isGenerating = false;
 let researchMode = false;
 let projectToDelete = null;
+let artifactsOpen = false;
 
 // AI Response Templates
 const codeResponses = {
@@ -721,6 +722,11 @@ function updateWorkspaceMessage(messageId, content) {
         const contentEl = messageEl.querySelector('.message-content');
         contentEl.innerHTML = formatMessage(content);
         
+        // Check for code blocks and open artifacts
+        if (content.includes('```html') || content.includes('```css') || content.includes('```javascript')) {
+            openArtifactsWithCode(content);
+        }
+        
         // Highlight code if present
         messageEl.querySelectorAll('pre code').forEach(block => {
             hljs.highlightElement(block);
@@ -867,6 +873,11 @@ function updateMessage(messageId, content) {
         const contentEl = messageEl.querySelector('.message-content');
         contentEl.innerHTML = formatMessage(content);
         
+        // Check for code blocks and open artifacts
+        if (content.includes('```html') || content.includes('```css') || content.includes('```javascript')) {
+            openArtifactsWithCode(content);
+        }
+        
         // Highlight code if present
         messageEl.querySelectorAll('pre code').forEach(block => {
             hljs.highlightElement(block);
@@ -991,6 +1002,11 @@ function switchToChat() {
     document.getElementById('projectsView').style.display = 'none';
     document.getElementById('projectWorkspace').style.display = 'none';
     
+    // Close artifacts if open
+    if (artifactsOpen) {
+        closeArtifacts();
+    }
+    
     // Update nav active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelector('.nav-item[onclick="switchToChat()"]').classList.add('active');
@@ -1001,6 +1017,11 @@ function switchToProjects() {
     document.getElementById('chatArea').style.display = 'none';
     document.getElementById('projectsView').style.display = 'block';
     document.getElementById('projectWorkspace').style.display = 'none';
+    
+    // Close artifacts if open
+    if (artifactsOpen) {
+        closeArtifacts();
+    }
     
     // Update nav active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -1266,5 +1287,57 @@ function toggleKnowledgePanel() {
     } else {
         sidebar.classList.remove('collapsed');
         toggleBtn.textContent = '📁 Project knowledge';
+    }
+}
+
+// Artifacts functionality
+function openArtifactsWithCode(content) {
+    // Extract HTML code from the message
+    const htmlMatch = content.match(/```html\n([\s\S]*?)```/);
+    if (htmlMatch) {
+        const htmlCode = htmlMatch[1];
+        
+        // Open artifacts panel
+        const artifactsPanel = document.getElementById('artifactsPanel');
+        artifactsPanel.classList.add('open');
+        document.body.classList.add('artifacts-open');
+        artifactsOpen = true;
+        
+        // Set code content
+        document.getElementById('artifactsCodeContent').textContent = htmlCode;
+        
+        // Create preview
+        const iframe = document.getElementById('artifactsIframe');
+        const blob = new Blob([htmlCode], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        iframe.src = url;
+        
+        // Highlight code
+        hljs.highlightElement(document.getElementById('artifactsCodeContent'));
+        
+        // Switch to preview tab by default
+        switchArtifactTab('preview');
+    }
+}
+
+function closeArtifacts() {
+    const artifactsPanel = document.getElementById('artifactsPanel');
+    artifactsPanel.classList.remove('open');
+    document.body.classList.remove('artifacts-open');
+    artifactsOpen = false;
+}
+
+function switchArtifactTab(tab) {
+    // Update tab buttons
+    document.querySelectorAll('.artifacts-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tab + 'Tab').classList.add('active');
+    
+    // Show/hide content
+    if (tab === 'preview') {
+        document.getElementById('artifactsPreview').style.display = 'block';
+        document.getElementById('artifactsCode').style.display = 'none';
+    } else {
+        document.getElementById('artifactsPreview').style.display = 'none';
+        document.getElementById('artifactsCode').style.display = 'block';
     }
 }

@@ -238,6 +238,26 @@
         </div>
     </div>
 
+    <!-- Artifacts Panel -->
+    <div class="artifacts-panel" id="artifactsPanel">
+        <div class="artifacts-header">
+            <h3 class="artifacts-title">Artifacts</h3>
+            <button class="artifacts-close" onclick="closeArtifacts()">×</button>
+        </div>
+        <div class="artifacts-tabs">
+            <button class="artifacts-tab active" id="previewTab" onclick="switchArtifactTab('preview')">Preview</button>
+            <button class="artifacts-tab" id="codeTab" onclick="switchArtifactTab('code')">Code</button>
+        </div>
+        <div class="artifacts-content">
+            <div class="artifacts-preview" id="artifactsPreview">
+                <iframe class="artifacts-iframe" id="artifactsIframe" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+            <div class="artifacts-code" id="artifactsCode" style="display: none;">
+                <pre><code class="language-html" id="artifactsCodeContent"></code></pre>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div class="modal-overlay" id="deleteConfirmModal" style="display: none;">
         <div class="delete-confirm-modal">

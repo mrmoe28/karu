@@ -1678,3 +1678,150 @@ body {
 .workspace-sidebar.collapsed .knowledge-panel {
     opacity: 0;
 }
+
+/* Artifacts Panel Styles */
+.artifacts-panel {
+    position: fixed;
+    top: 0;
+    right: -600px;
+    width: 600px;
+    height: 100vh;
+    background: #1a1a1a;
+    border-left: 1px solid #3e3e42;
+    z-index: 1000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.artifacts-panel.open {
+    right: 0;
+}
+
+.artifacts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #3e3e42;
+    background: #2d2d30;
+}
+
+.artifacts-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.artifacts-close {
+    background: none;
+    border: none;
+    color: #888888;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.artifacts-close:hover {
+    background: #3e3e42;
+    color: #ffffff;
+}
+
+.artifacts-tabs {
+    display: flex;
+    background: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.artifacts-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #888888;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+}
+
+.artifacts-tab:hover {
+    background: #3e3e42;
+    color: #ffffff;
+}
+
+.artifacts-tab.active {
+    color: #ff6b35;
+    border-bottom-color: #ff6b35;
+    background: #3e3e42;
+}
+
+.artifacts-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.artifacts-preview {
+    height: 100%;
+    background: white;
+}
+
+.artifacts-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+}
+
+.artifacts-code {
+    height: 100%;
+    overflow: auto;
+    padding: 0;
+}
+
+.artifacts-code pre {
+    margin: 0;
+    height: 100%;
+    overflow: auto;
+    background: #1a1a1a;
+    padding: 20px;
+}
+
+.artifacts-code code {
+    font-family: 'Monaco', 'Menlo', 'Cascadia Code', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #ffffff;
+}
+
+/* Adjust main content when artifacts is open */
+body.artifacts-open .main-content {
+    margin-right: 600px;
+    transition: margin-right 0.3s ease;
+}
+
+body.artifacts-open .project-workspace {
+    margin-right: 600px;
+    transition: margin-right 0.3s ease;
+}
+
+/* Hide artifacts panel on small screens */
+@media (max-width: 1200px) {
+    .artifacts-panel {
+        width: 100vw;
+        right: -100vw;
+    }
+    
+    body.artifacts-open .main-content,
+    body.artifacts-open .project-workspace {
+        margin-right: 0;
+    }
+    
+    body.artifacts-open .artifacts-panel {
+        right: 0;
+    }
+}
