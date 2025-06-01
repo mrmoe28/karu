@@ -247,18 +247,32 @@
         <div class="resize-handle" id="resizeHandle"></div>
         <div class="artifacts-header">
             <h3 class="artifacts-title">Artifacts</h3>
-            <button class="artifacts-close" onclick="closeArtifacts()">×</button>
+            <div class="artifacts-controls">
+                <button class="artifacts-minimize" onclick="toggleArtifactsMinimize()" id="artifactsMinimize">−</button>
+                <button class="artifacts-close" onclick="closeArtifacts()">×</button>
+            </div>
         </div>
-        <div class="artifacts-tabs">
+        <div class="artifacts-tabs" id="artifactsTabs">
             <button class="artifacts-tab active" id="previewTab" onclick="switchArtifactTab('preview')">Preview</button>
             <button class="artifacts-tab" id="codeTab" onclick="switchArtifactTab('code')">Code</button>
         </div>
-        <div class="artifacts-content">
+        <div class="artifacts-content" id="artifactsContent">
             <div class="artifacts-preview" id="artifactsPreview">
                 <iframe class="artifacts-iframe" id="artifactsIframe"></iframe>
             </div>
             <div class="artifacts-code" id="artifactsCode" style="display: none;">
                 <pre><code class="language-html" id="artifactsCodeContent"></code></pre>
+            </div>
+            <div class="artifacts-live-code" id="artifactsLiveCode" style="display: none;">
+                <div class="live-code-header">
+                    <span class="live-code-title">✍️ Writing code...</span>
+                    <div class="typing-indicator-small">
+                        <div class="typing-dot-small"></div>
+                        <div class="typing-dot-small"></div>
+                        <div class="typing-dot-small"></div>
+                    </div>
+                </div>
+                <pre><code class="language-html" id="artifactsLiveCodeContent"></code></pre>
             </div>
         </div>
     </div>

@@ -1110,6 +1110,7 @@ async function sendMessage() {
     
     isGenerating = true;
     messageInput.value = '';
+    messageInput.disabled = false; // Ensure input stays enabled
     
     // Hide welcome screen, show messages
     document.getElementById('welcomeScreen').style.display = 'none';
@@ -1134,6 +1135,10 @@ async function sendMessage() {
     saveChatMessage(message, response);
     
     isGenerating = false;
+    
+    // Re-enable input and focus
+    messageInput.disabled = false;
+    messageInput.focus();
 }
 
 function addMessage(sender, content) {
@@ -1326,6 +1331,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Start with a new chat
     startNewChat();
+    
+    // Ensure input is enabled
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.disabled = false;
+    }
 });
 
 // Navigation functions
@@ -1623,7 +1634,7 @@ function toggleKnowledgePanel() {
     }
 }
 
-// Artifacts functionality
+// Artifacts functionality with live code writing
 function openArtifactsWithCode(content) {
     // Extract HTML code from the message
     const htmlMatch = content.match(/```html\n([\s\S]*?)```/);
@@ -1636,28 +1647,94 @@ function openArtifactsWithCode(content) {
         const chatArea = document.getElementById('chatArea');
         
         artifactsPanel.classList.add('open');
+        artifactsPanel.classList.remove('minimized');
         mainContent.classList.add('has-artifacts');
         chatArea.classList.add('with-artifacts');
         document.body.classList.add('artifacts-open');
         artifactsOpen = true;
         
-        // Set code content
-        document.getElementById('artifactsCodeContent').textContent = htmlCode;
-        
-        // Create preview
-        const iframe = document.getElementById('artifactsIframe');
-        const blob = new Blob([htmlCode], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        iframe.src = url;
-        
-        // Highlight code
-        hljs.highlightElement(document.getElementById('artifactsCodeContent'));
-        
-        // Switch to preview tab by default
-        switchArtifactTab('preview');
+        // Show live code writing first
+        showLiveCodeWriting(htmlCode).then(() => {
+            // After writing animation, show final code and preview
+            document.getElementById('artifactsCodeContent').textContent = htmlCode;
+            
+            // Create preview
+            const iframe = document.getElementById('artifactsIframe');
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            iframe.src = url;
+            
+            // Highlight code
+            hljs.highlightElement(document.getElementById('artifactsCodeContent'));
+            
+            // Switch to preview tab
+            switchArtifactTab('preview');
+        });
         
         // Initialize resizing
         initializeResize();
+    }
+}
+
+async function showLiveCodeWriting(code) {
+    // Show live code tab
+    const liveCodeEl = document.getElementById('artifactsLiveCode');
+    const previewEl = document.getElementById('artifactsPreview');
+    const codeEl = document.getElementById('artifactsCode');
+    const tabsEl = document.getElementById('artifactsTabs');
+    
+    // Hide other content, show live writing
+    previewEl.style.display = 'none';
+    codeEl.style.display = 'none';
+    liveCodeEl.style.display = 'block';
+    tabsEl.style.display = 'none'; // Hide tabs during writing
+    
+    const liveCodeContent = document.getElementById('artifactsLiveCodeContent');
+    liveCodeContent.textContent = '';
+    
+    // Typewriter effect
+    let currentText = '';
+    const cursor = '<span class="typewriter-cursor"></span>';
+    
+    for (let i = 0; i < code.length; i++) {
+        currentText += code[i];
+        liveCodeContent.innerHTML = currentText + cursor;
+        
+        // Scroll to bottom
+        liveCodeContent.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        
+        // Variable delay for realistic typing
+        const delay = code[i] === '\n' ? 50 : Math.random() * 30 + 5;
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    
+    // Remove cursor and show tabs
+    liveCodeContent.innerHTML = currentText;
+    hljs.highlightElement(liveCodeContent);
+    
+    // Wait a moment then show tabs and switch to code view
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    tabsEl.style.display = 'flex';
+    liveCodeEl.style.display = 'none';
+    codeEl.style.display = 'block';
+}
+
+function toggleArtifactsMinimize() {
+    const panel = document.getElementById('artifactsPanel');
+    const button = document.getElementById('artifactsMinimize');
+    const mainContent = document.querySelector('.main-content');
+    
+    panel.classList.toggle('minimized');
+    
+    if (panel.classList.contains('minimized')) {
+        button.textContent = '+';
+        button.style.transform = 'rotate(0deg)';
+        mainContent.style.marginRight = '40px';
+    } else {
+        button.textContent = '−';
+        button.style.transform = '';
+        mainContent.style.marginRight = panel.style.width || '600px';
     }
 }
 
@@ -1667,9 +1744,11 @@ function closeArtifacts() {
     const chatArea = document.getElementById('chatArea');
     
     artifactsPanel.classList.remove('open');
+    artifactsPanel.classList.remove('minimized');
     mainContent.classList.remove('has-artifacts');
     chatArea.classList.remove('with-artifacts');
     document.body.classList.remove('artifacts-open');
+    mainContent.style.marginRight = '';
     artifactsOpen = false;
 }
 
